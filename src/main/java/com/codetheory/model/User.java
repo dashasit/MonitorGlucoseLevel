@@ -42,14 +42,13 @@ public class User {
 	}
 
 	public User(String firstName, String lastName, Date dob, String loginId,
-			String password, Set<UserGlucoseHistory> glucoseHistories) {
+			String password) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dob = dob;
 		this.loginId = loginId;
 		this.password = password;
-		this.glucoseHistories = glucoseHistories;
 	}
 
 	public int getId() {
@@ -98,6 +97,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<UserGlucoseHistory> getGlucoseHistories() {
+		return glucoseHistories;
+	}
+
+	public void setGlucoseHistories(Set<UserGlucoseHistory> glucoseHistories) {
+		this.glucoseHistories = glucoseHistories;
 	}
 
 }

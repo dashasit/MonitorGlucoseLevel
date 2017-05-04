@@ -1,5 +1,6 @@
 package com.codetheory.dao;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,6 +50,40 @@ public class UserDao extends JdbcDaoSupport {
 		Object[] inputs = new Object[] { new Date() };
 
 		return jdbcTemplate.query(query, inputs, new GlucoseHistoryRowMapper());
+	}
+
+	public List<UserGlucoseHistory> getUserGlucoseHistory(int userId,
+			String reportType) {
+		
+		String query = "select id, userid, glucose_level, lastmodified from UserGlucoseHistory where userid=? and DATE_CONDITION";
+
+		switch (reportType) {
+			case "Weekly": {
+				Calendar cal = Calendar.getInstance();
+				cal.set(Calendar.DAY_OF_MONTH, cal.get(Calendar.DAY_OF_MONTH) - 6);
+				Date startDate = cal.getTime();
+				Date endDate = new Date();
+				query = query.replace("DATE_CONDITION", "lastmodified>="
+						+ startDate + "lastmodified<=" + endDate);
+			}
+			case "Monthly": {
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.MONTH, -1);
+				Date startDate = cal.getTime();
+				Date endDate = new Date();
+				query = query.replace("DATE_CONDITION", "lastmodified>="
+						+ startDate + "lastmodified<=" + endDate);
+			}
+			default: {
+				query = query.replace("DATE_CONDITION", "lastmodified="
+						+ new Date());
+			}
+		}
+		
+		Object[] inputs = new Object[] { userId };
+
+		return jdbcTemplate.query(query, inputs, new GlucoseHistoryRowMapper());
+
 	}
 
 	@Transactional

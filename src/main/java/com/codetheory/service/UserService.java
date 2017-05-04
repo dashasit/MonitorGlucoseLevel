@@ -22,6 +22,11 @@ public class UserService {
 		user.setId(maxId);
 		userDao.addUser(user);
 	}
+	
+	public List<UserGlucoseHistory> getUserGlucoseHistory(int userId, String reportType)
+	{
+		return userDao.getUserGlucoseHistory(userId, reportType);
+	}
 
 	public void addUserGlucoseHistory(UserGlucoseHistory history)
 			throws Exception {

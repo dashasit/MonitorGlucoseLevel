@@ -1,9 +1,12 @@
 package com.codetheory.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -27,6 +30,20 @@ public class UserController {
 			e.printStackTrace();
 		}
 		return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+	}
+	
+	@GetMapping("/user/glucoseHistory/select")
+	public ResponseEntity<List<UserGlucoseHistory>> getUserGlucoseHistory(int userId, String reportType) {
+		List<UserGlucoseHistory> histories = null;
+		try {
+			histories = userService.getUserGlucoseHistory(userId, reportType);
+			
+			return new ResponseEntity<List<UserGlucoseHistory>>(histories, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ResponseEntity<List<UserGlucoseHistory>>(histories, HttpStatus.NOT_FOUND);
 	}
 
 	@PostMapping("/user/glucoseHistory/add")
